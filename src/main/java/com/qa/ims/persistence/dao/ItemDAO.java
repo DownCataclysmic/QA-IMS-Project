@@ -21,9 +21,9 @@ public class ItemDAO implements Dao<Item> {
 	@Override
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long itemId = resultSet.getLong("item_id");
-		String itemName = resultSet.getString("item_name");
-		Long price = resultSet.getLong("price");
-		return new Item(itemId, itemName, price);
+		String item_name = resultSet.getString("item_name");
+		Long item_price = resultSet.getLong("item_price");
+		return new Item(itemId, item_name, item_price);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ItemDAO implements Dao<Item> {
 	public Item create(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO items(item_name, price) VALUES (?, ?)");) {
+						.prepareStatement("INSERT INTO items(item_name, item_price) VALUES (?, ?)");) {
 			statement.setString(1, item.getItemName());
 			statement.setLong(2, item.getPrice());
 			statement.executeUpdate();
@@ -97,7 +97,7 @@ public class ItemDAO implements Dao<Item> {
 	public Item update(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE items SET item_name = ?, price = ? WHERE item_id = ?");) {
+						.prepareStatement("UPDATE items SET item_name = ?, item_price = ? WHERE item_id = ?");) {
 			statement.setString(1, item.getItemName());
 			statement.setLong(2, item.getPrice());
 			statement.setLong(3, item.getItemId());
