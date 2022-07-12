@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.ItemDAO;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.Utils;
 
@@ -47,6 +48,9 @@ public class ItemController implements CrudController<Item> {
 
 	@Override
 	public Item update() {
+		for (Item element : itemDAO.readAll()) {
+		    System.out.println(element);
+		}
 		LOGGER.info("Please enter the id of the item you would like to update");
 		Long itemId = utils.getLong();
 		LOGGER.info("Please enter a new item name");
@@ -60,6 +64,9 @@ public class ItemController implements CrudController<Item> {
 
 	@Override
 	public int delete() {
+		for (Item element : itemDAO.readAll()) {
+		    System.out.println(element);
+		}
 		LOGGER.info("Please enter the id of the item you would like to delete");
 		Long itemId = utils.getLong();
 		return itemDAO.delete(itemId);
