@@ -75,6 +75,9 @@ public class CustomerController implements CrudController<Customer> {
 	 */
 	@Override
 	public int delete() {
+		for (Customer element : customerDAO.readAll()) {
+		    System.out.println(element);
+		}
 		LOGGER.info("Please enter the id of the customer you would like to delete");
 		Long id = utils.getLong();
 		return customerDAO.delete(id);
