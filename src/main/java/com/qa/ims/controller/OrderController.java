@@ -61,6 +61,11 @@ public class OrderController implements CrudController<Order> {
 		return order;
 	}
 
+	/**
+	 * Deletes an existing customer by the id of the customer
+	 * 
+	 * @return
+	 */
 	@Override
 	public int delete() {
 		for (Order element : orderDAO.readAll()) {
