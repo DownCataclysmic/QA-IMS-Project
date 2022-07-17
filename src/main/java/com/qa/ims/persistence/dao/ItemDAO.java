@@ -22,7 +22,7 @@ public class ItemDAO implements Dao<Item> {
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long item_id = resultSet.getLong("item_id");
 		String item_name = resultSet.getString("item_name");
-		Long item_price = resultSet.getLong("item_price");
+		Double item_price = resultSet.getDouble("item_price");
 		return new Item(item_id, item_name, item_price);
 	}
 
@@ -67,7 +67,7 @@ public class ItemDAO implements Dao<Item> {
 				PreparedStatement statement = connection
 						.prepareStatement("INSERT INTO items(item_name, item_price) VALUES (?, ?)");) {
 			statement.setString(1, item.getItemName());
-			statement.setLong(2, item.getPrice());
+			statement.setDouble(2, item.getPrice());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -99,7 +99,7 @@ public class ItemDAO implements Dao<Item> {
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE items SET item_name = ?, item_price = ? WHERE item_id = ?");) {
 			statement.setString(1, item.getItemName());
-			statement.setLong(2, item.getPrice());
+			statement.setDouble(2, item.getPrice());
 			statement.setLong(3, item.getItemId());
 			statement.executeUpdate();
 			return read(item.getItemId());

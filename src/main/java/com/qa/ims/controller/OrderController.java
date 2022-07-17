@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.dao.OrderDAO;
 import com.qa.ims.persistence.domain.Order;
+import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.Utils;
 
 public class OrderController implements CrudController<Order> {
@@ -22,9 +25,6 @@ public class OrderController implements CrudController<Order> {
 		this.utils = utils;
 	}
 
-	/**
-	 * Reads all customers to the logger
-	 */
 	@Override
 	public List<Order> readAll() {
 		List<Order> orders = orderDAO.readAll();
@@ -37,11 +37,11 @@ public class OrderController implements CrudController<Order> {
 	@Override
 	public Order create() {
 		LOGGER.info("Please enter the customer ID:");
-		Long customer_id = utils.getLong();
-		LOGGER.info("Please enter the item ID:");
-		Long item_id = utils.getLong();
-		Order order = orderDAO.create(new Order(customer_id, item_id));
-		LOGGER.info("Order created");
+		Long fk_customer_id = utils.getLong();
+		CustomerDAO customerDao = new CustomerDAO();
+        Customer createdCustomer = customerDao.read(fk_customer_id);
+        Order order = orderDAO.create(new Order(createdCustomer));
+        LOGGER.info("New Order Successfully Created");
 		return order;
 	}
 
@@ -52,20 +52,13 @@ public class OrderController implements CrudController<Order> {
 		}
 		LOGGER.info("Please enter the order ID:");
 		Long order_id = utils.getLong();
-		LOGGER.info("Please enter a new customer ID:");
-		Long customer_id = utils.getLong();
 		LOGGER.info("Please enter a new item ID:");
 		Long item_id = utils.getLong();
-		Order order = orderDAO.update(new Order(order_id, customer_id, item_id));
-		LOGGER.info("Customer Updated");
+		Order order = orderDAO.update(new Order(order_id, item_id));
+		LOGGER.info("Order Updated");
 		return order;
 	}
 
-	/**
-	 * Deletes an existing customer by the id of the customer
-	 * 
-	 * @return
-	 */
 	@Override
 	public int delete() {
 		for (Order element : orderDAO.readAll()) {
@@ -73,6 +66,7 @@ public class OrderController implements CrudController<Order> {
 		}
 		LOGGER.info("Please enter the ID of the order you would like to delete:");
 		Long order_id = utils.getLong();
+		LOGGER.info("Order deleted.");
 		return orderDAO.delete(order_id);
 	}
 

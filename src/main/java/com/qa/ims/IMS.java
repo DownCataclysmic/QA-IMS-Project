@@ -33,7 +33,7 @@ public class IMS {
 		final ItemDAO iteDAO = new ItemDAO();
 		this.items = new ItemController(iteDAO, utils);
 		
-		final OrderDAO ordDAO = new OrderDAO();
+		final OrderDAO ordDAO = new OrderDAO(custDAO, iteDAO);
 		this.orders = new OrderController(ordDAO, utils);
 	}
 

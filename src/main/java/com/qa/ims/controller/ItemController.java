@@ -40,7 +40,7 @@ public class ItemController implements CrudController<Item> {
 		LOGGER.info("Please enter the item name:");
 		String item_name = utils.getString();
 		LOGGER.info("Please enter the price");
-		Long item_price = utils.getLong();
+		Double item_price = utils.getDouble();
 		Item item = itemDAO.create(new Item(item_name, item_price));
 		LOGGER.info("item created");
 		return item;
@@ -52,12 +52,12 @@ public class ItemController implements CrudController<Item> {
 		    System.out.println(element);
 		}
 		LOGGER.info("Please enter the ID of the item you would like to update:");
-		Long itemId = utils.getLong();
+		Long item_id = utils.getLong();
 		LOGGER.info("Please enter a new item name:");
 		String item_name = utils.getString();
 		LOGGER.info("Please enter a new price:");
-		Long item_price = utils.getLong();
-		Item item = itemDAO.update(new Item(itemId, item_name, item_price));
+		Double item_price = utils.getDouble();
+		Item item = itemDAO.update(new Item(item_id, item_name, item_price));
 		LOGGER.info("Customer Updated");
 		return item;
 	}
@@ -68,8 +68,8 @@ public class ItemController implements CrudController<Item> {
 		    System.out.println(element);
 		}
 		LOGGER.info("Please enter the ID of the item you would like to delete:");
-		Long itemId = utils.getLong();
-		return itemDAO.delete(itemId);
+		Long item_id = utils.getLong();
+		return itemDAO.delete(item_id);
 	}
 
 }
