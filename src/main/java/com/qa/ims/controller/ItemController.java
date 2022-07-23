@@ -1,11 +1,5 @@
 package com.qa.ims.controller;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-public class ItemController {
-=======
-=======
->>>>>>> 897f6d9cc186b2508db3f5072a6577b906eda36b
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -77,9 +71,5 @@ public class ItemController implements CrudController<Item> {
 		Long item_id = utils.getLong();
 		return itemDAO.delete(item_id);
 	}
-<<<<<<< HEAD
->>>>>>> feature_crud
 
-=======
->>>>>>> 897f6d9cc186b2508db3f5072a6577b906eda36b
 }
