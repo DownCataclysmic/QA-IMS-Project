@@ -11,9 +11,9 @@ import com.qa.ims.utils.Utils;
  *
  */
 public enum Action {
-	CREATE("To save a new entity into the database"), READ("To read an entity from the database"),
-	UPDATE("To change an entity already in the database"), DELETE("To remove an entity from the database"),
-	RETURN("To return to domain selection");
+	CREATE("To save a new thingymajig into the database."), READ("To read a thingymajig from the database."),
+	UPDATE("To change a thingymajig already in the database"), DELETE("To remove a thingymajig from the database"),
+	RETURN("To return to place where you can choose what thingymajig to use.");
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
@@ -51,7 +51,7 @@ public enum Action {
 			try {
 				action = Action.valueOf(utils.getString().toUpperCase());
 			} catch (IllegalArgumentException e) {
-				LOGGER.error("Invalid selection please try again");
+				LOGGER.error("You silly sausage. Stop messing around.");
 			}
 		} while (action == null);
 		return action;
