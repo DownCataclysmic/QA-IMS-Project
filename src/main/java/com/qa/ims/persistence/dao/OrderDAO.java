@@ -136,21 +136,34 @@ public class OrderDAO implements Dao<Order> {
 		return null;
 	}
 
-	@Override
-	public Order update(Order order) {
+	public Order updateAddToOrder(Long order_id, Long item_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE orders (orders_id = ?, fk_items_id = ?) VALUES (?,?)");) {
-			statement.setLong(1, order.getOrder_id());
-			statement.setLong(2, order.getItem_id());
+			statement.setLong(1, order_id);
+			statement.setLong(2, item_id);
 			statement.executeUpdate();
-			return read(order.getOrder_id());
+			return read(order_id);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return null;
 	}
+	
+	public Order updateRemoveFromOrder(Long order_id, Long item_id) {
+        try (Connection connection = DBUtils.getInstance().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("DELETE FROM order_items WHERE fk_orders_id = " + order_id +" AND fk_items_id = " + item_id)) {
+            statement.setLong(1, order_id);
+            statement.setLong(2, item_id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.debug(e);
+            LOGGER.error(e.getMessage());
+        }
+        return read(order_id);
+    }
 	
 	@Override
 	public int delete(Long order_id) {
@@ -164,6 +177,12 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return 0;
 		
+	}
+
+	@Override
+	public Order update(Order t) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

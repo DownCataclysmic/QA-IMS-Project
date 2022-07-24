@@ -1,10 +1,13 @@
 package com.qa.ims.persistence.domain;
 
+import java.util.List;
+
 public class Item {
 
 	private Long item_id;
 	private String item_name;
 	private Double item_price;
+	private List<Item> item_list;
 
 	public Item(String item_name, Double item_price) {
 		this.setItemName(item_name);
@@ -44,6 +47,14 @@ public class Item {
 	@Override
 	public String toString() {
 		return "Item ID: " + item_id + "  Item Name: " + item_name + "  Price: £" + item_price;
+	}
+
+	public List<Item> getItem_list() {
+		return item_list;
+	}
+
+	public void setItem_list(List<Item> item_list) {
+		this.item_list = item_list;
 	}
 
 }

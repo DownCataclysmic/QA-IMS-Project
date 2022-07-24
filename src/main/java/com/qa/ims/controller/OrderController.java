@@ -45,19 +45,29 @@ public class OrderController implements CrudController<Order> {
 		return order;
 	}
 
-	@Override
+	@Override	
 	public Order update() {
-		for (Order element : orderDAO.readAll()) {
+        Order order = new Order();
+        for (Order element : orderDAO.readAll()) {
 		    System.out.println(element);
 		}
-		LOGGER.info("Please enter the order ID:");
-		Long order_id = utils.getLong();
-		LOGGER.info("Please enter a new item ID:");
-		Long item_id = utils.getLong();
-		Order order = orderDAO.update(new Order(order_id, item_id));
-		LOGGER.info("Order Updated");
-		return order;
-	}
+        LOGGER.info("Please enter the Order ID you want to update");
+        Long orders_id = utils.getLong();
+        LOGGER.info("Do you want to Add or Remove an item?");
+        String choice = utils.getString();
+        LOGGER.info("Enter the Item ID");
+        Long items_id = utils.getLong();
+        if (choice.equals("Add")) {
+            order = orderDAO.updateAddToOrder(orders_id, items_id);
+            LOGGER.info("The item has been successfully added to the order");
+        }
+        if (choice.equals("Remove")) {
+            order = orderDAO.updateRemoveFromOrder(orders_id, items_id);
+            LOGGER.info("The item has been successfully removed from order");
+        }
+        LOGGER.info("Order Successfully Updated");
+        return order;
+    }
 
 	@Override
 	public int delete() {

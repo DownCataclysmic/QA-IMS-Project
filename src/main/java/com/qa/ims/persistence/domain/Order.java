@@ -10,6 +10,9 @@ public class Order {
 	private Double order_price;
 	private List<Item> item_list;
 	
+	 public Order() {
+	    }
+	
 	public Order(Long order_id) {
 		this.order_id = order_id;
 	}
