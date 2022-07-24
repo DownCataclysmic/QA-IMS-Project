@@ -11,8 +11,17 @@ public class Order {
 	private Double order_price;
 	private List<Item> item_list = new ArrayList<>();
 	private String item_name;
+	private int quantity;
 	
-	 public String getItem_name() {
+	 public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getItem_name() {
 		return item_name;
 	}
 
@@ -45,6 +54,14 @@ public class Order {
 	public Order(Long order_id, Customer customer_id, Double order_price, List<Item> item_list) {
 		this.order_id = order_id;
 		this.customer_id = customer_id;
+		this.order_price = order_price;
+		this.item_list = item_list;
+	}
+	
+	public Order(Long order_id, Customer customer_id, int quantity, Double order_price, List<Item> item_list) {
+		this.order_id = order_id;
+		this.customer_id = customer_id;
+		this.quantity = quantity;
 		this.order_price = order_price;
 		this.item_list = item_list;
 	}
