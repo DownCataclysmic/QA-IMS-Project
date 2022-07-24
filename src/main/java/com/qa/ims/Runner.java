@@ -10,7 +10,7 @@ public class Runner {
 	public static void main(String[] args) {
 		IMS ims = new IMS();
 		ims.imsSystem();
-		LOGGER.info("SO LONg!");
+		LOGGER.info("Smell ya later.");
 	}
 
 }

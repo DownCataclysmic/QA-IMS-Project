@@ -32,51 +32,41 @@ public class OrderDAO implements Dao<Order> {
 		Long order_id = resultSet.getLong("order_id");
 		long customer_id = resultSet.getLong("fk_customer_id");
 		Customer customer = customerDAO.read(customer_id);
-		Double order_price = calculateOrderCost(order_id);
-		List<Item> item_list = getItems(order_id);
+		Double order_price = getCost(order_id);
+		List<Item> item_list = getItems(order_id); //Need to tweak this so I can add multiple items to an order.
 		
 		return new Order(order_id, customer, order_price, item_list);
 	}
 	
-	public double calculateOrderCost(Long order_id) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-	             PreparedStatement statement = connection
-	                     .prepareStatement("SELECT * FROM order_items WHERE fk_order_id = ?")) {
-	            statement.setLong(1, order_id);
-	            ResultSet resultSet = statement.executeQuery();
-	            double totalOrderCost = 0;
-	            while (resultSet.next()) {
-	                totalOrderCost += itemDAO.read(resultSet.getLong("fk_item_id")).getPrice();
-	            }
-	            return totalOrderCost;
-	        } catch (Exception e) {
-	            LOGGER.debug(e);
-	            LOGGER.error(e.getMessage());
-	        }
-	        return 0.0;
-	 }
-	
+	//This shows the cost of one of the items.
+	public Double getCost(Long item_list) {
+		ItemDAO items = new ItemDAO();
+		Double cost = items.read(item_list).getPrice();
+		return cost;
+	}
 	
 	public List<Item> getItems(Long order_id) {
-		List<Item> ItemList = new ArrayList<>();
+		//Mish-mash of code to try and create a list of items in an order.Non-functioning so far.
+		List<Item> item_list = new ArrayList<>();
         try (Connection connection = DBUtils.getInstance().getConnection();
              PreparedStatement statement = connection
-                     .prepareStatement("SELECT * FROM order_items WHERE fk_order_id = ?")) {
+                     .prepareStatement("SELECT * FROM order_items WHERE fk_order_id = ?");) {
             statement.setLong(1, order_id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ItemList.add(itemDAO.read(resultSet.getLong("fk_item_id")));
+                item_list.add(itemDAO.read(resultSet.getLong("fk_item_id")));
             }
-            return ItemList;
+            return item_list;
         } catch (Exception e) {
             LOGGER.debug(e);
             LOGGER.error(e.getMessage());
         }
-        return ItemList;
+        return item_list;
     }
 	
 	@Override
 	public List<Order> readAll() {
+		//
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
@@ -127,6 +117,7 @@ public class OrderDAO implements Dao<Order> {
 				PreparedStatement statement = connection
 						.prepareStatement("INSERT INTO orders(fk_customer_id, order_price) VALUES (?, 0.0)");) {
 			statement.setLong(1, order.getCustomer_id().getId());
+			//statement.setDouble(2, order.getOrder_price());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -136,32 +127,58 @@ public class OrderDAO implements Dao<Order> {
 		return null;
 	}
 
-	@Override
-	public Order update(Order order) {
+	public Order updateAddToOrder(Long order_id, Long item_id, List<Item> item_list) {
+		//Updates the order by adding to the order.
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE orders (order_id = ?, fk_item_id = ?) VALUES (?,?)");) {
-			statement.setLong(1, order.getOrder_id());
-			statement.setLong(2, order.getItem_id());
+						.prepareStatement("UPDATE order_items (order_id = ?, fk_item_id = ?) VALUES (?,?)");) {
+			statement.setLong(1, order_id);
+			statement.setLong(2, item_id);
 			statement.executeUpdate();
-			return read(order.getOrder_id());
+			return read(order_id);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
-		return null;
+		return read(order_id);
 	}
+	
+	public Order updateRemoveFromOrder(Long order_id, Long item_id, List<Item> item_list) {
+		//Updates the order by removing from the order.
+        try (Connection connection = DBUtils.getInstance().getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("DELETE FROM order_items WHERE fk_order_id = " + order_id + " AND fk_item_id = " + item_id);) {
+            statement.setLong(1, order_id);
+            statement.setLong(2, item_id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.debug(e);
+            LOGGER.error(e.getMessage());
+        }
+        return read(order_id);
+    }
 	
 	@Override
 	public int delete(Long order_id) {
+		//When asked for an order id, the order associated with that order id is deleted.
 		try (Connection connection = DBUtils.getInstance().getConnection();
-	             Statement statement = connection.createStatement()) {
-	            return statement.executeUpdate("DELETE FROM order_items WHERE fk_order_id = " + order_id);
+	            PreparedStatement statement = connection.prepareStatement("DELETE FROM orders WHERE order_id = ?");) {
+	    			statement.setLong(1, order_id);
+	    			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
+		
+	}
+
+	@Override
+	public Order update(Order t) {
+		//Thought the best way to approach this was by creating a method exclusively for adding items to an order
+		//and another method for deleting items from an order.
+		//This makes the "update" method redundant for orders.
+		return null;
 	}
 
 }

@@ -19,7 +19,7 @@ public class IMS {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private final CustomerController customers;
+	private final CustomerController customer;
 	private final ItemController items;
 	private final OrderController orders;
 	
@@ -28,7 +28,7 @@ public class IMS {
 	public IMS() {
 		this.utils = new Utils();
 		final CustomerDAO custDAO = new CustomerDAO();
-		this.customers = new CustomerController(custDAO, utils);
+		this.customer = new CustomerController(custDAO, utils);
 		
 		final ItemDAO iteDAO = new ItemDAO();
 		this.items = new ItemController(iteDAO, utils);
@@ -43,7 +43,7 @@ public class IMS {
 
 		Domain domain = null;
 		do {
-			LOGGER.info("Which entity would you like to use?");
+			LOGGER.info("Which thingy would you like to use?");
 			Domain.printDomains();
 
 			domain = Domain.getDomain(utils);
@@ -60,7 +60,7 @@ public class IMS {
 			CrudController<?> active = null;
 			switch (domain) {
 			case CUSTOMER:
-				active = this.customers;
+				active = this.customer;
 				break;
 			case ITEM:
 				active = this.items;

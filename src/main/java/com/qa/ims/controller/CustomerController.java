@@ -44,10 +44,10 @@ public class CustomerController implements CrudController<Customer> {
 	@Override
 	public Customer create() {
 		LOGGER.info("Please enter a first name:");
-		String firstName = utils.getString();
+		String first_name = utils.getString();
 		LOGGER.info("Please enter a surname:");
 		String surname = utils.getString();
-		Customer customer = customerDAO.create(new Customer(firstName, surname));
+		Customer customer = customerDAO.create(new Customer(first_name, surname));
 		LOGGER.info("Customer created");
 		return customer;
 	}
@@ -63,10 +63,10 @@ public class CustomerController implements CrudController<Customer> {
 		LOGGER.info("Please enter the ID of the customer you would like to update:");
 		Long customer_id = utils.getLong();
 		LOGGER.info("Please enter a first name");
-		String firstName = utils.getString();
+		String first_name = utils.getString();
 		LOGGER.info("Please enter a surname:");
 		String surname = utils.getString();
-		Customer customer = customerDAO.update(new Customer(customer_id, firstName, surname));
+		Customer customer = customerDAO.update(new Customer(customer_id, first_name, surname));
 		LOGGER.info("Customer Updated");
 		return customer;
 	}
@@ -82,8 +82,8 @@ public class CustomerController implements CrudController<Customer> {
 		    System.out.println(element);
 		}
 		LOGGER.info("Please enter the ID of the customer you would like to delete:");
-		Long id = utils.getLong();
-		return customerDAO.delete(id);
+		Long customer_id = utils.getLong();
+		return customerDAO.delete(customer_id);
 	}
 
 }

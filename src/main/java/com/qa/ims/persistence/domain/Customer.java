@@ -46,6 +46,8 @@ public class Customer {
 		return "ID: " + customer_id + "  First Name: " + firstName + "  Surname: " + surname;
 	}
 
+	//I have absolutely no clue what the below code does:
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
