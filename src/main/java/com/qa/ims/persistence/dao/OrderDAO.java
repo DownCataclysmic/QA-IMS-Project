@@ -30,12 +30,13 @@ public class OrderDAO implements Dao<Order> {
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long order_id = resultSet.getLong("order_id");
-		long customer_id = resultSet.getLong("fk_customer_id");
+		Long customer_id = resultSet.getLong("fk_customer_id");
 		Customer customer = customerDAO.read(customer_id);
-		Double order_price = getCost(order_id);
+		Double order_price = resultSet.getDouble("order_price");
 		List<Item> item_list = getItems(order_id); //Need to tweak this so I can add multiple items to an order.
+		int quantity = resultSet.getInt("quantity");
 		
-		return new Order(order_id, customer, order_price, item_list);
+		return new Order(order_id, customer, quantity, order_price, item_list);
 	}
 	
 	//This shows the cost of one of the items.
@@ -61,6 +62,7 @@ public class OrderDAO implements Dao<Order> {
             LOGGER.debug(e);
             LOGGER.error(e.getMessage());
         }
+        
         return item_list;
     }
 	
@@ -127,11 +129,11 @@ public class OrderDAO implements Dao<Order> {
 		return null;
 	}
 
-	public Order updateAddToOrder(Long order_id, Long item_id, List<Item> item_list) {
+	public Order updateAddToOrder(Long order_id, Long item_id, String item_name, List<Item> item_list) {
 		//Updates the order by adding to the order.
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE order_items (order_id = ?, fk_item_id = ?) VALUES (?,?)");) {
+						.prepareStatement("UPDATE order_items (fk_order_id = ?, fk_item_id = ?, quantity = ?) VALUES (?,?,?)");) {
 			statement.setLong(1, order_id);
 			statement.setLong(2, item_id);
 			statement.executeUpdate();
@@ -143,7 +145,7 @@ public class OrderDAO implements Dao<Order> {
 		return read(order_id);
 	}
 	
-	public Order updateRemoveFromOrder(Long order_id, Long item_id, List<Item> item_list) {
+	public Order updateRemoveFromOrder(Long order_id, Long item_id, String item_name, List<Item> item_list) {
 		//Updates the order by removing from the order.
         try (Connection connection = DBUtils.getInstance().getConnection();
              PreparedStatement statement = connection

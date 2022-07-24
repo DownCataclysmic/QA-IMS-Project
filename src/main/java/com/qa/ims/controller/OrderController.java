@@ -59,12 +59,13 @@ public class OrderController implements CrudController<Order> {
         LOGGER.info("Enter the item ID");
         Long items_id = utils.getLong();
         List<Item> item_list = new ArrayList<Item>();
+        String item_name = utils.getString();
         if (decision.equals("Add")) {
-            order = orderDAO.updateAddToOrder(orders_id, items_id, item_list);
+            order = orderDAO.updateAddToOrder(orders_id, items_id, item_name, item_list);
             LOGGER.info("The item has been successfully added to the order");
         }
         if (decision.equals("Remove")) {
-            order = orderDAO.updateRemoveFromOrder(orders_id, items_id, item_list);
+            order = orderDAO.updateRemoveFromOrder(orders_id, items_id, item_name, item_list);
             LOGGER.info("The item has been successfully removed from order");
         }
         LOGGER.info("Order Successfully Updated");
