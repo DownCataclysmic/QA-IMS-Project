@@ -1,37 +1,17 @@
 Coverage: 56.4%
 # Project Title
 
-One Paragraph of project description goes here
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+#IMS - Inventory Management System
+The aim of this project is to produce an Inventory Management System that can be interacted through the command line that can read, add, update, and delete Customers, Items, and Orders. It is also expected to show the overall price of a created order.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+To run this code you will need:
 
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+* Eclipse IDE installed and in PATH.
+* MySQL Server installed at the very least. Ideally MySQL Workbench installed too.
+* JDBC
+* Maven
 
 ## Running the tests
 
@@ -47,14 +27,6 @@ Give an example
 
 ### Integration Tests 
 Explain what these tests test, why and how to run them
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
 
 ```
 Give an example
@@ -84,6 +56,6 @@ This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Ed and Jordan for teaching me the basics of Java.
+* UberEats for feeding me.
+* Dude on Youtube that explained what a DAO was.
